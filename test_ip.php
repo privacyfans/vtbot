@@ -16,7 +16,7 @@ if ($conn->connect_error) {
 }
 
 // Mendapatkan alamat IP pengunjung
-$ip_address = $_SERVER['REMOTE_ADDR'];
+$ip_address =  array_key_exists('REMOTE_ADDR',$_SERVER) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';;
 
 // Persiapan statement untuk memasukkan data
 $stmt = $conn->prepare("INSERT INTO ip_log (ip_address) VALUES (?)");
