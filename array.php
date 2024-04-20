@@ -1,7 +1,7 @@
 <?php
 function generateCredential() {
 
-$data = "username:zenal.w
+/*$data = "username:zenal.w
 password:neverquit
 username:agin.an
 password:neverquit
@@ -36,8 +36,9 @@ password:neverquit
 username:Iswarotun
 password:P@ssw0rd2K20
 username:andri.tz
-password:P@ssw0rd2K23";
-
+password:P@ssw0rd2K23";*/
+$data = "username:Silvia.n
+password:neverquit";
 
 
 // Pecah string menjadi baris

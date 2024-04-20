@@ -19,7 +19,8 @@ $sql = "INSERT INTO log_proses (note, created_at, updated_at) VALUES ('Start', n
                                         
 // URL halaman
 $startTime = microtime(true);
-$credentials=generateCredential();
+//$credentials=generateCredential();
+$credentials=[['username'=>'Silvia.n','password'=>'neverquit']];
 
 foreach ($credentials as $credential) {
     // Mengakses username dan password dari setiap array asosiatif
@@ -115,23 +116,33 @@ foreach ($credentials as $credential) {
                             if ($value != "") {
                                 $urlPost = 'https://salesvisit.cbn.net.id/saveSalesVisiting';
         
-                                if (strpos($text, 'Occupied') !== false) {
+                               if (strpos($text, 'Occupied') !== false) {
                                     $result = "ACTIV";
                                     $remark = "-";
                                     $nama="-";
                                     $tlp="-";
                                     $activity="NOAC";
+                                    $provider="NN";
                                 } else {
-                                    $nama=generateRandomName();
-                                    $tlp=generateRandomPhoneNumber();
                                     $activity="PROB";
                                     $nonOccupiedResults = [
-                                        "XTHER",
-                                        "XINTR",
                                         "OTISP",
-                                        "DISCS"
+                                        "DISCS",
+                                        "XINTR",
+                                        "XTHER"
                                     ];
                                     $result = $nonOccupiedResults[array_rand($nonOccupiedResults)];
+                                    if($result =="XTHER"){
+                                        $nama="-";
+                                        $tlp="-";
+                                        $activity="BROC";
+                                        $provider="NN";
+                                    }else{
+                                        $activity="PROB";
+                                        $nama=strtolower(generateRandomName());
+                                        $tlp=generateRandomPhoneNumber();
+                                        $provider="INDI";
+                                    }
                                     $remark = "-";
                                 }
         
@@ -144,7 +155,7 @@ foreach ($credentials as $credential) {
                                     'TypeOfBuilding' => 'RESI',
                                     'Activity' => $activity,
                                     'Hasil' => $result,
-                                    'ProviderExisting' => 'INDI',
+                                    'ProviderExisting' => $provider,
                                     'Otherprovider' => '',
                                     'ProductType' => 'JR',
                                     'Notes' => '-',
@@ -152,7 +163,6 @@ foreach ($credentials as $credential) {
                                     'latitude' => '-6.914426748720025',
                                     'longitude' => '107.59474479479847',
                                 );
-        
         
                                 $checkSql = "SELECT * FROM tbl_result WHERE home_id = '$value' AND DATE(created_at) = DATE(NOW())";
                                 try {
@@ -209,7 +219,8 @@ foreach ($credentials as $credential) {
                                         echo "Error: " . $sql . "<br>" . $conn->error;
                                     }
 
-                                    sleep(120);
+                                    $delay = rand(60, 120);
+                                    sleep($delay);
         
                                 }    
                             }
